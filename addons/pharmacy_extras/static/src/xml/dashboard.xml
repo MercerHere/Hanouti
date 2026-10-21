@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="pharmacy_extras.Dashboard">
+        <div class="o_action p-4 overflow-auto">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="m-0">Pharmacy Dashboard</h2>
+                <button class="btn btn-secondary" t-on-click="load">Refresh</button>
+            </div>
+
+            <div t-if="state.data">
+                <!-- KPI cards -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-3">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <div class="text-muted">Sales today</div>
+                                <div class="fs-2 fw-bold" t-out="state.data.sales_total"/>
+                                <small class="text-muted"><t t-out="state.data.orders_count"/> order(s)</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card h-100 border-danger" role="button" t-on-click="openExpiring">
+                            <div class="card-body">
+                                <div class="text-muted">Expired lots in stock</div>
+                                <div class="fs-2 fw-bold text-danger" t-out="state.data.expired_count"/>
+                                <small class="text-muted">click to review</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card h-100 border-warning" role="button" t-on-click="openExpiring">
+                            <div class="card-body">
+                                <div class="text-muted">Expiring within 30 days</div>
+                                <div class="fs-2 fw-bold text-warning" t-out="state.data.soon_count"/>
+                                <small class="text-muted">click to review</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card h-100" role="button" t-on-click="openReordering">
+                            <div class="card-body">
+                                <div class="text-muted">Products below minimum</div>
+                                <div class="fs-2 fw-bold" t-out="state.data.low_stock_count"/>
+                                <small class="text-muted">click for reordering rules</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-3">
+                    <!-- Expiring lots -->
+                    <div class="col-lg-7">
+                        <div class="card">
+                            <div class="card-header fw-bold">Expiring soon (next 60 days)</div>
+                            <table class="table table-sm mb-0">
+                                <thead>
+                                    <tr><th>Product</th><th>Lot</th><th>Qty</th><th>Expires</th><th>Days left</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-if="!state.data.expiring.length">
+                                        <td colspan="5" class="text-muted text-center">Nothing expiring soon.</td>
+                                    </tr>
+                                    <tr t-foreach="state.data.expiring" t-as="row" t-key="row.id"
+                                        t-att-class="row.days_left &lt; 0 ? 'table-danger' : (row.days_left &lt;= 30 ? 'table-warning' : '')">
+                                        <td t-out="row.product"/>
+                                        <td t-out="row.lot"/>
+                                        <td t-out="row.qty"/>
+                                        <td t-out="row.date"/>
+                                        <td t-out="row.days_left"/>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Low stock -->
+                    <div class="col-lg-5">
+                        <div class="card">
+                            <div class="card-header fw-bold">Low stock</div>
+                            <table class="table table-sm mb-0">
+                                <thead>
+                                    <tr><th>Product</th><th>On hand</th><th>Minimum</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-if="!state.data.low_stock.length">
+                                        <td colspan="3" class="text-muted text-center">All stocked up.</td>
+                                    </tr>
+                                    <tr t-foreach="state.data.low_stock" t-as="row" t-key="row.id">
+                                        <td t-out="row.product"/>
+                                        <td t-out="row.on_hand"/>
+                                        <td t-out="row.min"/>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div t-else="" class="text-muted">Loading...</div>
+        </div>
+    </t>
+</templates>
