@@ -6,6 +6,12 @@
         <field name="model">stock.lot</field>
         <field name="arch" type="xml">
             <list default_order="expiration_date asc" decoration-danger="product_expiry_alert">
+            <header>
+            <button name="action_dispose_expired" type="object"
+            string="Dispose Expired Stock"
+            groups="stock.group_stock_manager"
+            confirm="Write off the expired stock of the selected lots? This cannot be undone."/>
+            </header>
                 <field name="product_expiry_alert" column_invisible="1"/>
                 <field name="name" string="Lot"/>
                 <field name="product_id"/>

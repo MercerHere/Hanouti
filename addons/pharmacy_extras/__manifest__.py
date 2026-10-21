@@ -8,7 +8,11 @@
     "license": "LGPL-3",
     "depends": ["stock", "product_expiry", "point_of_sale"],
     "data": [
+        "security/ir.model.access.csv",
+        "data/ir_cron_data.xml",
         "views/product_views.xml",
+        "views/stock_lot_views.xml",
+        "views/writeoff_views.xml",
     ],
     "installable": True,
     "application": False,
