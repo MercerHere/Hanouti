@@ -7,7 +7,7 @@
     "author": "Akrem Njahi",
     "license": "LGPL-3",
     "depends": ["stock", "product_expiry", "point_of_sale"],
-        "data": [
+    "data": [
         "security/ir.model.access.csv",
         "data/ir_cron_data.xml",
         "views/product_views.xml",
